@@ -3,14 +3,19 @@ from selenium.webdriver.common.keys import Keys
 from time import sleep
 driver = webdriver.Chrome()
 
-driver.get("http://www.jra.go.jp/IPAT_TAIKEN/s-pat/pw_010_i.html")
+driver.get("https://accounts.google.com/ServiceLogin?service=mail&continue=https://mail.google.com/mail/&hl=ja")
 
 #page1
-elem = driver.find_element_by_css_selector('#top > div.bg-block > div > table > tbody > tr > td:nth-child(2) > div > div > form > table.input > tbody > tr > td:nth-child(2) > span > input[type="text"]')
-elem.send_keys("PXUAR1R6")
+elem = driver.find_element_by_css_selector('#Email')
+elem.send_keys("godfri30@gmail.com")
+elem = driver.find_element_by_css_selector('#next').click()
 sleep(0.5)
-elem = driver.find_element_by_css_selector('#top > div.bg-block > div > table > tbody > tr > td:nth-child(2) > div > div > form > table.input > tbody > tr > td:nth-child(3) > p > a').click()
-driver.switch_to_window(driver.window_handles[-1])
+elem = driver.find_element_by_css_selector('#Passwd')
+elem.send_keys("idsnave9da")
+sleep(0.5)
+elem = driver.find_element_by_css_selector('#signIn').click()
+
+# driver.switch_to_window(driver.window_handles[-1])
 
 # page2
 elem = driver.find_element_by_css_selector('#top > div.bg-block > div > div > table > tbody > tr:nth-child(1) > td:nth-child(3) > span > input[type="text"]')
