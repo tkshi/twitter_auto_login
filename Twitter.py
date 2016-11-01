@@ -15,6 +15,7 @@ def login():
     elem.send_keys(TWITTER_PASS)
     elem = driver.find_element_by_css_selector('#page-container > div > div.signin-wrapper > form > div.clearfix > button')
     elem.click()
+    return driver
 
 def setLangage():
     # page2
