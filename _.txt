@@ -1,5 +1,0 @@
-
-list = document.querySelectorAll("span.button-text.follow-text")
-for(i=0;i<list.length;i++){
-list[i].click()
-}
