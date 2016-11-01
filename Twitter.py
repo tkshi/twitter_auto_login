@@ -1,9 +1,15 @@
 from selenium import webdriver
+from selenium.common.exceptions import NoSuchElementException
 from time import sleep
 
-TWITTER_ID = "vitalinakudrya3"
-TWITTER_PASS = "cmkUZyJytm"
-TWITTER_EMAIL = ""
+TWITTER_ID = "ioannikiykryuk2"
+TWITTER_PASS = "O0irt2BkUY"
+TWITTER_EMAIL = "ioannikiy_kryukov@bk.ru"
+
+
+TWITTER_ID = "denisovafloren9"
+TWITTER_PASS = "sJjwfQwRa6"
+TWITTER_EMAIL = "DenisovaFlorensa1983@mail.ru"
 
 class Twitter:
     def __init__(self,twitter_id,twitter_pass,twitter_email):
@@ -11,6 +17,7 @@ class Twitter:
         self.twitter_pass = twitter_pass
         self.twitter_email = twitter_email
         self.driver = webdriver.Chrome()
+        self.success_login = True
 
         self.driver.get("https://twitter.com/login")
         elem = self.driver.find_element_by_css_selector('#page-container > div > div.signin-wrapper > form > fieldset > div:nth-child(2) > input')
@@ -19,6 +26,27 @@ class Twitter:
         elem.send_keys(self.twitter_pass)
         elem = self.driver.find_element_by_css_selector('#page-container > div > div.signin-wrapper > form > div.clearfix > button')
         elem.click()
+
+        try:
+            elem = self.driver.find_element_by_css_selector('#challenge_response')
+            elem.send_keys(self.twitter_email)
+            elem = self.driver.find_element_by_css_selector('#email_challenge_submit')
+            elem.click()
+        except NoSuchElementException as e:
+            self.success_login = True
+        try:
+            elem = self.driver.find_element_by_css_selector('#country_code')
+            self.success_login = False
+        except NoSuchElementException as e:
+            self.success_login = True
+        if self.driver.title == 'Twitter':
+            self.success_login = True
+        else:
+            self.success_login = False
+
+    def getLoginStatus(self):
+        return self.success_login
+
     def getDriver(self):
         return self.driver
 
@@ -61,4 +89,4 @@ class Twitter:
         elem.click()
 if __name__ == '__main__':
     tw = Twitter(twitter_id=TWITTER_ID,twitter_pass=TWITTER_PASS,twitter_email=TWITTER_EMAIL)
-    tw.getDriver()
+    print(tw.getLoginStatus())
