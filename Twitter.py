@@ -25,6 +25,8 @@ class Twitter:
     def setLangage(self):
         # page2
         self.driver.get('https://twitter.com/settings/account')
+        if self.driver.title == "Twitter / 設定":
+            return True
         elem = self.driver.find_element_by_css_selector('#user_lang')
         elem.find_element_by_css_selector("option[value='ja']").click()
         sleep(0.1)
@@ -40,6 +42,9 @@ class Twitter:
 
     def setPhone(self,phone_number="0000"):
         self.driver.get('https://twitter.com/settings/add_phone')
+        elem = self.driver.find_element_by_css_selector('#page-container > div.content-main > div.content-inner.no-stream-end > h3')
+        if elem.text == "ご利用の携帯電話番号を確認してください。":
+            return True
         elem = self.driver.find_element_by_css_selector('#device_country_code > option:nth-child(8)')
         elem.click()
         elem = self.driver.find_element_by_css_selector('#phone_number')
