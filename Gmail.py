@@ -25,23 +25,26 @@ class Gmail:
 
     def getPinCode(self):
         self.driver.get("https://mail.google.com/mail/u/0/#inbox")
-        sleep(5)
         elems = self.driver.find_elements_by_css_selector('span')
         for e in elems:
             if e.text == '40404':
                 e.click()
                 break
         elems = self.driver.find_elements_by_css_selector('div')
-        sleep(3)
         pin_code = ""
-        for e in elems:
-            # print(e.text)
-            pattern = r"Twitter認証コードは([0-9]*)です"
-            repatter = re.compile(pattern)
-            matchOB = repatter.findall(e.text)
-            if len(matchOB) > 0:
-                print("コード is:",matchOB[0])
-                pin_code = matchOB[0]
+        try:
+            for e in elems:
+                print(type(e.text.encode('utf-8')))
+                print(type("Twitter認証コードは([0-9]*)です"))
+                print("pincode is ",pin_code)
+                pattern = r"Twitter認証コードは([0-9]*)です"
+                repatter = re.compile(pattern)
+                matchOB = repatter.findall(e.text)
+                if len(matchOB) > 0:
+                    print("コード is:",matchOB[0])
+                    pin_code = matchOB[0]
+        except Exception:
+            return pin_code
         return pin_code
     # self.driver.switch_to_window(driver.window_handles[-1])
 
