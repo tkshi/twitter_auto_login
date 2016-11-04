@@ -2,6 +2,7 @@
 from selenium import webdriver
 from selenium.common.exceptions import NoSuchElementException
 from time import sleep
+from Error import *
 
 TWITTER_ID = "domnikasamsono4"
 TWITTER_PASS = "fDuJ4GD8A6"
@@ -39,6 +40,8 @@ class Twitter:
             elem = self.driver.find_element_by_css_selector('#tweet-box-home-timeline')
             self.success_login = True
         except Exception:
+            self.driver.close()
+            raise TwitterLoginError()
             self.success_login = False
 
 
