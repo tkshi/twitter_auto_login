@@ -18,7 +18,7 @@ GMAIL_ADRESS = "frabro568@gmail.com",GMAIL_PASS = "ndagmabry9",PHONE_NUMBER = "(
 	driver = tw.getDriver()
 	sl = SocialLogin(driver=driver)
 	sl.twitterLogin()
-	driver.close()
-
+	tw.close()
+	gm.close()
 if __name__ == '__main__':
 	raise run()

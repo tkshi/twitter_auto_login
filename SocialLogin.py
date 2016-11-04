@@ -31,7 +31,6 @@ class SocialLogin:
         elem = self.driver.find_element_by_css_selector('#allow')
         elem.click()
 
-
 if __name__ == '__main__':
     driver = Twitter(twitter_id=TWITTER_ID,twitter_pass=TWITTER_PASS,twitter_email=TWITTER_EMAIL).getDriver()
     sl = SocialLogin(driver=driver)

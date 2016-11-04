@@ -23,8 +23,10 @@ class Gmail:
         elem = self.driver.find_element_by_css_selector('#signIn').click()
         sleep(3)
 
+    def close(self):
+        self.driver.close()
+
     def getPinCode(self):
-        self.driver.get("https://mail.google.com/mail/u/0/#inbox")
         elems = self.driver.find_elements_by_css_selector('span')
         for e in elems:
             if e.text == '40404':
@@ -34,11 +36,13 @@ class Gmail:
         elems = self.driver.find_element_by_css_selector('body')
         pin_code = ""
         print('text is ',elems.text)
-        elems.text.encode('utf-8')
+        if(isinstance(elems.text, unicode)):
+            text = elems.text.encode('utf-8')
+
         print(type(elems.text))
         pattern = r"Twitter認証コードは([0-9]*)です"
         repatter = re.compile(pattern)
-        matchOB = repatter.findall(elems.text)
+        matchOB = repatter.findall(text)
         print(matchOB)
         if len(matchOB) > 0:
             print("コード is:",matchOB[-1])

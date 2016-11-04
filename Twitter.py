@@ -35,11 +35,11 @@ class Twitter:
             elem = self.driver.find_element_by_css_selector('#email_challenge_submit')
             elem.click()
         except NoSuchElementException as e:
-            print('none')
+            pass
         try:
             elem = self.driver.find_element_by_css_selector('#tweet-box-home-timeline')
             self.success_login = True
-        except Exception:
+        except NoSuchElementException as e:
             self.driver.close()
             raise TwitterLoginError()
             self.success_login = False
@@ -56,7 +56,9 @@ class Twitter:
         self.driver.get('https://twitter.com/settings/account')
         if self.driver.title == u"Twitter / 設定":
             return True
+
         elem = self.driver.find_element_by_css_selector('#user_lang')
+        elem.click()
         elem.find_element_by_css_selector("option[value='ja']").click()
         sleep(1)
         self.driver.find_element_by_css_selector('#settings_save').click()
@@ -71,6 +73,16 @@ class Twitter:
 
     def setPhone(self,phone_number="0000"):
         self.driver.get('https://twitter.com/settings/add_phone')
+        try:
+            elem = self.driver.find_element_by_css_selector('#sms-phone-delete-form > div > h3')
+            raise AlreadyAddedPhoneNumber
+        except NoSuchElementException as e:
+            pass
+        try:
+            elem = self.driver.find_element_by_css_selector('#cancel_registration')
+            elem.click()
+        except Exception:
+            pass 
         elem = self.driver.find_element_by_css_selector('#page-container > div.content-main > div.content-inner.no-stream-end > h3')
         elem = self.driver.find_element_by_css_selector('#device_country_code > option:nth-child(8)')
         elem.click()
@@ -80,11 +92,13 @@ class Twitter:
         elem.click()
         try:
             elem = self.driver.find_element_by_css_selector('#settings-alert-box > h4')
-            sleep(0.5)
-            if elem.text == u"この操作は許可されていません":
-                return False
-        except Exception:
-            print('except')
+            if(elem.text == u'試行回数の制限を超えました。しばらくしてからもう一度お試しください。'):
+                self.close()
+                raise CannotRegisterYetError
+            self.close()
+            raise PhoneNumberInvalidError
+        except NoSuchElementException:
+            pass
         return True
     def close(self):
         self.driver.close()
